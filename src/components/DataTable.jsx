@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { useState } from "react";
 import getItemLabel from "../utils/getItemLabel";
-import DataTableItem from "./DataTableItem";
+import DataTableRow from "./DataTableRow";
 import { MultiSelect } from "./MultiSelect";
 
 export const GET_DATA = gql`
@@ -40,7 +40,7 @@ const DataTable = () => {
   };
 
   return (
-    <div>
+    <div id="data-table">
       {loading && <p>Loading...</p>}
       {error && <p>Error fetching data</p>}
       {data && (
@@ -65,7 +65,7 @@ const DataTable = () => {
             <tbody>
               {data.collection.dataSources.map((dataSource) => {
                 return (
-                  <DataTableItem
+                  <DataTableRow
                     key={dataSource.id}
                     dataSource={dataSource}
                     columnsToShow={columnsToShow}
