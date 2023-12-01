@@ -1,4 +1,5 @@
 export const TableColumns = {
+  id: "ID",
   name: "Name",
   archived: "Archived",
   createdAt: "Created",

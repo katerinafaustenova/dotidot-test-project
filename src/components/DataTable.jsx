@@ -1,9 +1,10 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { useState } from "react";
 import getItemLabel from "../utils/getItemLabel";
+import DataTableItem from "./DataTableItem";
 import { MultiSelect } from "./MultiSelect";
 
-const GET_DATA = gql`
+export const GET_DATA = gql`
   query DataSources {
     collection(
       page: 0
@@ -12,6 +13,7 @@ const GET_DATA = gql`
       organizationId: 19952
     ) {
       dataSources {
+        id
         name
         archived
         createdAt
@@ -24,27 +26,18 @@ const GET_DATA = gql`
   }
 `;
 
-const UPDATE_DATA = gql`
-  mutation UpdateDataSource($id: ID!, $name: String!, $archived: Boolean!) {
-    updateDataSource(id: $id, name: $name, archived: $archived) {
-      name
-      archived
-    }
-  }
-`;
-
-const initState = ["name", "itemsCount", "createdAt", "updatedAt"];
-
 const DataTable = () => {
   const { data, loading, error } = useQuery(GET_DATA);
-  const [updateDataSource] = useMutation(UPDATE_DATA);
-  const [columnsToShow, setColumnsToShow] = useState(initState);
+  const [columnsToShow, setColumnsToShow] = useState([
+    "itemsCount",
+    "createdAt",
+    "updatedAt",
+  ]);
 
-  // const handleUpdateDataSource = (id, name, archived) => {
-  //   updateDataSource({ variables: { id, name, archived } })
-  //     .then()
-  //     .catch();
-  // };
+  const handleChange = (selected) => {
+    const selectedArray = selected.map(({ value }) => value);
+    setColumnsToShow(selectedArray);
+  };
 
   return (
     <div>
@@ -55,14 +48,15 @@ const DataTable = () => {
           <MultiSelect
             label="Zobrazit sloupce"
             options={Object.keys(data?.collection?.dataSources?.[0]).filter(
-              (key) => !key.startsWith("__")
+              (key) => !key.startsWith("__") && key !== "name" && key !== "id"
             )}
             defaultValues={columnsToShow}
-            setSelectedOptions={setColumnsToShow}
+            handleSelectChange={(selected) => handleChange(selected)}
           />
           <table>
             <thead>
               <tr>
+                <th>{getItemLabel("name")}</th>
                 {columnsToShow.map((column) => (
                   <th key={column}>{getItemLabel(column)}</th>
                 ))}
@@ -71,17 +65,11 @@ const DataTable = () => {
             <tbody>
               {data.collection.dataSources.map((dataSource) => {
                 return (
-                  <tr key={dataSource.name}>
-                    {columnsToShow.map((column) => {
-                      return (
-                        <td key={`${dataSource.name}-${column}`}>
-                          {typeof dataSource[column] === "boolean"
-                            ? dataSource[column].toString()
-                            : dataSource[column]}
-                        </td>
-                      );
-                    })}
-                  </tr>
+                  <DataTableItem
+                    key={dataSource.id}
+                    dataSource={dataSource}
+                    columnsToShow={columnsToShow}
+                  />
                 );
               })}
             </tbody>

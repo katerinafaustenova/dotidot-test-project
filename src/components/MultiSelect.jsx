@@ -1,36 +1,27 @@
 import Select from "react-select";
 import getItemLabel from "../utils/getItemLabel";
 
-export function MultiSelect({
-  label,
-  options,
-  defaultValues,
-  setSelectedOptions,
-}) {
-  const handleChange = (selected) => {
-    const selectedArray = selected.map(({ value }) => value);
-    setSelectedOptions(selectedArray);
-  };
-
-  const optionsObject = options.map((option) => {
-    return {
-      value: option,
-      label: getItemLabel(option),
-    };
-  });
-
-  const defaultValuesObject = defaultValues.map((value) => {
+export function getMultiSelectObject(values) {
+  const newObject = values.map((value) => {
     return {
       value,
       label: getItemLabel(value),
     };
   });
+  return newObject;
+}
 
+export function MultiSelect({
+  label,
+  options,
+  defaultValues,
+  handleSelectChange,
+}) {
   return (
     <Select
-      options={optionsObject}
-      defaultValue={defaultValuesObject}
-      onChange={handleChange}
+      options={getMultiSelectObject(options)}
+      defaultValue={getMultiSelectObject(defaultValues)}
+      onChange={handleSelectChange}
       isMulti
       closeMenuOnSelect={false}
       placeholder={label}
