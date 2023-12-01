@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DataTableItem renders correctly with all props 1`] = `
+<td>
+  <select
+    disabled={true}
+    id="Test Name-archived"
+    name="archived"
+    onChange={[Function]}
+    value="false"
+  >
+    <option
+      value="true"
+    >
+      True
+    </option>
+    <option
+      value="false"
+    >
+      False
+    </option>
+  </select>
+</td>
+`;
+
+exports[`DataTableItem renders correctly with column prop missing 1`] = `null`;
+
+exports[`DataTableItem renders correctly with createdAt prop missing 1`] = `
+<td>
+  --
+</td>
+`;
+
+exports[`DataTableItem renders correctly with different itemsCount prop type 1`] = `
+<td>
+  10
+</td>
+`;
+
+exports[`DataTableItem renders correctly with no props 1`] = `null`;
+
+exports[`DataTableItem renders correctly with updatedAt prop empty 1`] = `
+<td>
+  --
+</td>
+`;
+
+exports[`DataTableItem renders correctly with whole dataSource prop missing 1`] = `null`;

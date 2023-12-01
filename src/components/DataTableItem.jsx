@@ -25,14 +25,17 @@ const DataTableItem = ({
         );
       case "createdAt":
         const createdAtDate = new Date(dataSource[column]);
-        const localeDate = createdAtDate.toLocaleDateString();
-        return localeDate;
+        if (!isNaN(new Date(createdAtDate))) {
+          const localeDate = createdAtDate.toLocaleDateString();
+          return localeDate;
+        } else return "--";
       case "updatedAt":
       case "lastImport":
-        const now = new Date();
         const updatedImportedDate = new Date(dataSource[column]);
-        const distance = formatDistance(updatedImportedDate, now);
-        return `${distance} ago`;
+        if (!isNaN(new Date(updatedImportedDate))) {
+          const distance = formatDistance(updatedImportedDate, new Date());
+          return `${distance} ago`;
+        } else return "--";
       default:
         return dataSource[column];
     }
