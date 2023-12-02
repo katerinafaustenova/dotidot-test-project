@@ -60,7 +60,7 @@ const DataTableRow = ({ dataSource, columnsToShow }) => {
     >
       <td>
         <input
-          id="name"
+          id={`${dataSource.id}-name`}
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
