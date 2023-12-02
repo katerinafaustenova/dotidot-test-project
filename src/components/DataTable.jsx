@@ -1,8 +1,10 @@
 import { gql, useQuery } from "@apollo/client";
 import { useState } from "react";
 import getItemLabel from "../utils/getItemLabel";
+import styles from "./DataTable.module.css";
 import DataTableRow from "./DataTableRow";
 import { MultiSelect } from "./MultiSelect";
+import Spinner from "./Spinner";
 
 export const GET_DATA = gql`
   query DataSources {
@@ -40,9 +42,9 @@ const DataTable = () => {
   };
 
   return (
-    <div id="data-table">
-      {loading && <p>Loading...</p>}
-      {error && <p>Error fetching data</p>}
+    <div id="container" className={styles.container}>
+      {loading && <Spinner />}
+      {error && <p className={styles.error}>Error fetching data</p>}
       {data && (
         <>
           <MultiSelect
@@ -53,16 +55,17 @@ const DataTable = () => {
             defaultValues={columnsToShow}
             handleSelectChange={(selected) => handleChange(selected)}
           />
-          <table>
-            <thead>
+          <table className={styles.table}>
+            <thead className={styles.thead}>
               <tr>
                 <th>{getItemLabel("name")}</th>
                 {columnsToShow.map((column) => (
                   <th key={column}>{getItemLabel(column)}</th>
                 ))}
+                <th></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className={styles.tbody}>
               {data.collection.dataSources.map((dataSource) => {
                 return (
                   <DataTableRow

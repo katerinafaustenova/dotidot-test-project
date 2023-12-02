@@ -1,7 +1,11 @@
 import { gql, useMutation } from "@apollo/client";
+import classNames from "classnames";
 import { useState } from "react";
+import { ReactComponent as Checkmark } from "../assets/checkmark.svg";
+import { ReactComponent as Edit } from "../assets/edit.svg";
 import { GET_DATA } from "./DataTable";
 import DataTableItem from "./DataTableItem";
+import styles from "./DataTableRow.module.css";
 
 const UPDATE_DATA = gql`
   mutation UpdateDataSource($id: BigInt!, $name: String, $archived: Boolean) {
@@ -42,14 +46,20 @@ const DataTableRow = ({ dataSource, columnsToShow }) => {
   };
 
   return (
-    <tr key={dataSource.id}>
+    <tr
+      key={dataSource.id}
+      className={classNames(styles.row, {
+        [styles.rowEdit]: editMode,
+      })}
+    >
       <td>
         <input
-          id={"name"}
-          name="name"
+          id="name"
+          type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           disabled={!editMode}
+          className={styles.input}
         />
       </td>
       {columnsToShow.map((column) => (
@@ -64,9 +74,13 @@ const DataTableRow = ({ dataSource, columnsToShow }) => {
       ))}
       <td>
         {editMode ? (
-          <button onClick={handleUpdate}>Save</button>
+          <button onClick={handleUpdate} className={styles.btn}>
+            <Checkmark />
+          </button>
         ) : (
-          <button onClick={handleEdit}>Edit</button>
+          <button onClick={handleEdit} className={styles.btn}>
+            <Edit />
+          </button>
         )}
       </td>
     </tr>

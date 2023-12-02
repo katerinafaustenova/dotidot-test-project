@@ -14,7 +14,6 @@ const DataTableItem = ({
         return (
           <select
             id={`${dataSource.name}-${column}`}
-            name="archived"
             value={archived}
             onChange={(e) => setArchived(e.target.value === "true")}
             disabled={!editMode}
