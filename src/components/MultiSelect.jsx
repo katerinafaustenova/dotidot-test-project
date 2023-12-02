@@ -1,4 +1,5 @@
 import Select from "react-select";
+import { customStyles } from "../utils/customMultiSelectStyles";
 import getItemLabel from "../utils/getItemLabel";
 
 export function getMultiSelectObject(values) {
@@ -26,7 +27,7 @@ export function MultiSelect({
       closeMenuOnSelect={false}
       placeholder={label}
       noOptionsMessage={() => "Žádné další možnosti"}
-      classNamePrefix="react-select"
+      styles={customStyles}
     />
   );
 }

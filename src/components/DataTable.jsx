@@ -42,7 +42,7 @@ const DataTable = () => {
   };
 
   return (
-    <div id="container" className={styles.container}>
+    <div className={styles.container}>
       {loading && <Spinner />}
       {error && <p className={styles.error}>Error fetching data</p>}
       {data && (
@@ -55,28 +55,32 @@ const DataTable = () => {
             defaultValues={columnsToShow}
             handleSelectChange={(selected) => handleChange(selected)}
           />
-          <table className={styles.table}>
-            <thead className={styles.thead}>
-              <tr>
-                <th>{getItemLabel("name")}</th>
-                {columnsToShow.map((column) => (
-                  <th key={column}>{getItemLabel(column)}</th>
-                ))}
-                <th></th>
-              </tr>
-            </thead>
-            <tbody className={styles.tbody}>
-              {data.collection.dataSources.map((dataSource) => {
-                return (
-                  <DataTableRow
-                    key={dataSource.id}
-                    dataSource={dataSource}
-                    columnsToShow={columnsToShow}
-                  />
-                );
-              })}
-            </tbody>
-          </table>
+          <section className={styles.tableSection}>
+            <table className={styles.table}>
+              <thead className={styles.thead}>
+                <tr>
+                  <th className={styles.nameColumnLabel}>
+                    {getItemLabel("name")}
+                  </th>
+                  {columnsToShow.map((column) => (
+                    <th key={column}>{getItemLabel(column)}</th>
+                  ))}
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody className={styles.tbody}>
+                {data.collection.dataSources.map((dataSource) => {
+                  return (
+                    <DataTableRow
+                      key={dataSource.id}
+                      dataSource={dataSource}
+                      columnsToShow={columnsToShow}
+                    />
+                  );
+                })}
+              </tbody>
+            </table>
+          </section>
         </>
       )}
     </div>

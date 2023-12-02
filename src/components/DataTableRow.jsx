@@ -29,18 +29,20 @@ const DataTableRow = ({ dataSource, columnsToShow }) => {
   };
 
   const handleUpdate = async () => {
-    try {
-      const data = await updateDataSource({
-        variables: {
-          id: dataSource.id,
-          name: name,
-          archived: archived,
-        },
-        refetchQueries: [{ query: GET_DATA }],
-      });
-      console.log("Updated data:", data);
-    } catch (error) {
-      console.error("Mutation error:", error);
+    if (name !== dataSource.name || archived !== dataSource.archived) {
+      try {
+        const data = await updateDataSource({
+          variables: {
+            id: dataSource.id,
+            name: name,
+            archived: archived,
+          },
+          refetchQueries: [{ query: GET_DATA }],
+        });
+        console.log("Updated data:", data);
+      } catch (error) {
+        console.error("Mutation error:", error);
+      }
     }
     setEditMode(false);
   };
@@ -72,13 +74,19 @@ const DataTableRow = ({ dataSource, columnsToShow }) => {
           setArchived={setArchived}
         />
       ))}
-      <td>
+      <td className={styles.btnColumn}>
         {editMode ? (
-          <button onClick={handleUpdate} className={styles.btn}>
+          <button
+            onClick={handleUpdate}
+            className={classNames(styles.btn, styles.checkmark)}
+          >
             <Checkmark />
           </button>
         ) : (
-          <button onClick={handleEdit} className={styles.btn}>
+          <button
+            onClick={handleEdit}
+            className={classNames(styles.btn, styles.edit)}
+          >
             <Edit />
           </button>
         )}
