@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import getItemLabel from "../utils/getItemLabel";
 import styles from "./DataTable.module.css";
 import DataTableRow from "./DataTableRow";
@@ -36,9 +36,15 @@ const DataTable = () => {
     "updatedAt",
   ]);
 
+  useEffect(() => {
+    const filterColumns = JSON.parse(localStorage.getItem("filter"));
+    filterColumns?.length > 0 && setColumnsToShow(filterColumns);
+  }, []);
+
   const handleChange = (selected) => {
     const selectedArray = selected.map(({ value }) => value);
     setColumnsToShow(selectedArray);
+    localStorage.setItem("filter", JSON.stringify(selectedArray));
   };
 
   return (
