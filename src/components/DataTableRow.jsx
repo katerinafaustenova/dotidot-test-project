@@ -6,6 +6,7 @@ import { ReactComponent as Edit } from "../assets/edit.svg";
 import { GET_DATA } from "./DataTable";
 import DataTableItem from "./DataTableItem";
 import styles from "./DataTableRow.module.css";
+import Spinner from "./Spinner";
 
 const UPDATE_DATA = gql`
   mutation UpdateDataSource($id: BigInt!, $name: String, $archived: Boolean) {
@@ -22,7 +23,7 @@ const DataTableRow = ({ dataSource, columnsToShow }) => {
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState(dataSource.name);
   const [archived, setArchived] = useState(dataSource.archived);
-  const [updateDataSource] = useMutation(UPDATE_DATA);
+  const [updateDataSource, { loading, error }] = useMutation(UPDATE_DATA);
 
   const handleEdit = () => {
     setEditMode(true);
@@ -41,7 +42,10 @@ const DataTableRow = ({ dataSource, columnsToShow }) => {
         });
         console.log("Updated data:", data);
       } catch (error) {
+        setName(dataSource.name);
+        setArchived(dataSource.archived);
         console.error("Mutation error:", error);
+        window.alert("Something went wrong when updating data");
       }
     }
     setEditMode(false);
@@ -75,14 +79,16 @@ const DataTableRow = ({ dataSource, columnsToShow }) => {
         />
       ))}
       <td className={styles.btnColumn}>
-        {editMode ? (
+        {loading && <Spinner inlineRow />}
+        {!loading && editMode && (
           <button
             onClick={handleUpdate}
             className={classNames(styles.btn, styles.checkmark)}
           >
             <Checkmark />
           </button>
-        ) : (
+        )}
+        {!loading && !editMode && (
           <button
             onClick={handleEdit}
             className={classNames(styles.btn, styles.edit)}

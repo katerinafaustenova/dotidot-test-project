@@ -1,17 +1,31 @@
 .spinnerContainer {
+  margin-top: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
+  cursor: default;
 }
 
-.spinnerContainer {
+.spinner {
   width: 64px;
   height: 64px;
   border: 8px solid;
   border-color: rgb(188, 188, 188) transparent rgb(138, 138, 138) transparent;
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
+  box-sizing: border-box;
+}
+
+.inlineRow {
+  margin-top: 0;
+  width: 35px;
+  height: 35px;
+}
+
+.inlineRow .spinner {
+  width: 16px;
+  height: 16px;
+  border-width: 3px;
 }
 
 @keyframes spin {
