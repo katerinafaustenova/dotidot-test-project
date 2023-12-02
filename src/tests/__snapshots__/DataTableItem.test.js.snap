@@ -5,7 +5,6 @@ exports[`DataTableItem renders correctly with all props 1`] = `
   <select
     disabled={true}
     id="Test Name-archived"
-    name="archived"
     onChange={[Function]}
     value="false"
   >
